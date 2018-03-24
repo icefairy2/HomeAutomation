@@ -52,9 +52,9 @@ $(function() {
     $('#lights .switch input:checkbox').change(function () {
         if (this.checked) {
             //this.prop('checked', false);
-            alert("on");
+            turnTheLight("TurnLamp?turn=ON");
         } else {
-            alert("off");
+            turnTheLight("TurnLamp?turn=OFF");
         }
 
         turnTheLight(url);
