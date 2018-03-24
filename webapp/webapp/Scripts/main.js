@@ -4,7 +4,6 @@ $(function() {
 		$.ajax({
             dataType: "json",
             url: url,
-            async: false,
             success: function (response) {
                 setTemp(response.Temperature + "° C");
 			}
