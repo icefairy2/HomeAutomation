@@ -1,9 +1,3 @@
-*{
-	font-family: 'Dosis', sans-serif;
-	margin: 0;
-	padding: 0;
-}
-
 /* header */
 header {
 	height: 100px;
@@ -20,6 +14,7 @@ header {
 	font-size: 36px;
 	color: white;
 	line-height: 100px;
+    margin: 0;
 }
 /* end header */
 
@@ -40,7 +35,7 @@ main {
 }
 
 #temp p {
-    width: 110px;
+    width: 127px;
     float: left;
 }
 
@@ -50,7 +45,7 @@ main {
 
     position: relative;
 
-    width: 600px;
+    width: 570px;
     height: 200px;
 
     overflow: hidden;
@@ -81,8 +76,10 @@ main {
 
 /* footer */
 footer {
-	position: fixed;
+	/*
+    position: fixed;
 	bottom: 0;
+    */
 	
 	/* text */
 	font-size: 20px;
