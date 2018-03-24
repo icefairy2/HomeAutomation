@@ -13,7 +13,7 @@ namespace webapp
     {
         public void Configuration(IAppBuilder app)
         {
-            GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source=DvD-PC;Initial Catalog=hangfire;Integrated Security=True");
+            GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source=DESKTOP-NLQQARQ;Initial Catalog=hangfire;Integrated Security=True");
 
             app.UseHangfireDashboard();
             app.UseHangfireServer();
