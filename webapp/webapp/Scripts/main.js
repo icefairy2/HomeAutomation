@@ -6,7 +6,7 @@ $(function() {
             url: url,
             success: function (response) {
                 console.log(response);
-                setTemp(response.Temperature + "° C");
+                setInnerTemp(response.Temperature + "° C");
 			}
         });
     }
@@ -18,7 +18,8 @@ $(function() {
             success: function (response) {
                 console.log(response);
                 for (i = 0; i < response.length; i++)
-                    appendoToTable(response[i].ID, response[i].Temperature, response[i].DateRecorded)
+                    //appendoToTable(response[i].ID, response[i].Temperature, response[i].DateRecorded)
+                    appendoToTable(response[i].Temperature, response[i].DateRecorded)
             }
         });
     }
@@ -27,15 +28,25 @@ $(function() {
 		return 1.8 * $temp + 32;
     }
 
-    function setTemp(celsius) {
+    function setInnerTemp(celsius) {
         $('#innerTemp').text(celsius);
     }
 
-    function appendoToTable(id, temperature, date) {
-        id = $('<td></td>').text(id);
+    function setOuterTemp(celsius) {
+        $('#outerTemp').text(celsius);
+    }
+    setOuterTemp("22° C");
+
+
+    //function appendoToTable(temperature, outTemperature date) {
+    function appendoToTable(temperature, date) {
+        //id = $('<td></td>').text(id);
         temperature = $('<td></td>').text(temperature + "° C");
+        //outTemperature = $('<td></td>').text(outTemperature + "° C");
+        outTemperature = $('<td></td>').text("22" + "° C");
         date = $('<td></td>').text(date);
-        let row = $('<tr></tr>').append(id, temperature, date);
+        //let row = $('<tr></tr>').append(id, temperature, date);
+        let row = $('<tr></tr>').append(outTemperature , temperature,  date);
 
         $('#temperatures').append(row);
     }

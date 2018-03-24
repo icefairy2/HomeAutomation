@@ -47,7 +47,7 @@ function slider(id, pause, animationSpeed, obj) {
         for (var i = 0; i < n_slides; i++) {
 
             if (i == 0) j = n_slides - 2; else if (i == n_slides - 1) j = 1; else j = i;
-            slides_html += '<li class="slide"><a href = "' + obj[j - 1]['url'] + '"></a><div class="slide-img" style="background-image:url(' + obj[j - 1]['urlToImage'] + ')">&nbsp;</div><div class="slide-info"><h3>' + obj[j - 1]['title'] + '</h3><div class="slide-description">' + obj[j - 1]['description'] + '</div></div></li>';
+            slides_html += '<li class="slide"><a href = "' + obj[j - 1]['url'] + '"><div class="slide-img" style="background-image:url(' + obj[j - 1]['urlToImage'] + ')">&nbsp;</div><div class="slide-info"><h3>' + obj[j - 1]['title'] + '</h3><div class="slide-description">' + obj[j - 1]['description'] + '</div></div></a></li>';
         }
 
         // Create Slider
