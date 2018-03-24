@@ -15,9 +15,10 @@ namespace webapp.Models
         {
         }
 
-        public Lamp(bool isTurnedOn)
+        public Lamp(bool isTurnedOn, DateTime dateTime)
         {
             IsTurnedOn = isTurnedOn;
+            DateRecorded = dateTime;
         }
     }
 }
