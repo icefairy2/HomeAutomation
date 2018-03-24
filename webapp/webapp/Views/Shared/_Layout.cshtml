@@ -8,17 +8,25 @@
 
     <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./Content/style.css">
+    <link rel="stylesheet" href="./Content/slider.css">
+
+    <!-- Slider-->
+    <script src="./Scripts/slider.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="./Scripts/main.js"></script>
 
-</head>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+</head>
 <body>
     <header>
         <div id="headercontent">
             <h1 id="pagetitle">Home automation</h1>
-            <nav><nav>
+            <nav></nav>
         </div>
     </header>
 
@@ -29,6 +37,13 @@
                 <br>Outside the house
             </p>
         </div>
+
+        <div id="news">
+            <div id="slide-wrap"><!-- slider --></div>
+            <span class="pull-right text-muted">* see console for real-time event log</span>
+        </div>
+        
+
     </main>
 
 
@@ -51,7 +66,7 @@
                     </button>
         <!--
 
-                    
+
     <!--
         </div>
                 <div class="navbar-collapse collapse">
@@ -64,13 +79,13 @@
         </div>
         <div class="container body-content">
         -->
-            @RenderBody()
-           <!-- <hr />
+    @RenderBody()
+    <!-- <hr />
             <footer>
                 <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
             </footer>
         </div>
     -->
-       
+
 </body>
-    </html>
+</html>
