@@ -219,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\normalize.css" />
     <Content Include="Content\slider.css" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
