@@ -200,23 +200,18 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="CommonStrings.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InOutTemperaturesController.cs" />
     <Compile Include="Controllers\LampsController.cs" />
-    <Compile Include="Controllers\TemperatureRecordsController.cs" />
     <Compile Include="Controllers\TemperatureUpdater.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WindowsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803242022277_InitialCreate.cs" />
-    <Compile Include="Migrations\201803242022277_InitialCreate.Designer.cs">
-      <DependentUpon>201803242022277_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\InOutTemperature.cs" />
+    <Compile Include="Models\InOutTemperatureDbContext.cs" />
     <Compile Include="Models\Lamp.cs" />
     <Compile Include="Models\LampDbContext.cs" />
-    <Compile Include="Models\Temperature.cs" />
-    <Compile Include="Models\TemperatureDBContext.cs" />
     <Compile Include="Models\Window.cs" />
     <Compile Include="Models\WindowDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -281,11 +276,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803242022277_InitialCreate.resx">
-      <DependentUpon>201803242022277_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

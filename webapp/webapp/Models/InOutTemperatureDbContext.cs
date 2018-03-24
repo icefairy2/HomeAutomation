@@ -6,7 +6,7 @@ using System.Web;
 
 namespace webapp.Models
 {
-    public class TemperatureDbContext : DbContext
+    public class InOutTemperatureDbContext : DbContext
     {
         // You can add custom code to this file. Changes will not be overwritten.
         // 
@@ -15,10 +15,10 @@ namespace webapp.Models
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
     
-        public TemperatureDbContext() : base("name=TemperatureDbContext")
+        public InOutTemperatureDbContext() : base("name=InOutTemperatureDbContext")
         {
         }
 
-        public System.Data.Entity.DbSet<webapp.Models.TemperatureRecord> TemperatureRecords { get; set; }
+        public System.Data.Entity.DbSet<webapp.Models.InOutTemperature> InOutTemperatures { get; set; }
     }
 }
