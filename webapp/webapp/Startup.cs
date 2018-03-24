@@ -13,12 +13,12 @@ namespace webapp
     {
         public void Configuration(IAppBuilder app)
         {
-            GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source=DESKTOP-R95RP8R;Initial Catalog=hangfire;Integrated Security=True");
+            GlobalConfiguration.Configuration.UseSqlServerStorage(CommonStrings.ConnectionString);
 
             app.UseHangfireDashboard();
             app.UseHangfireServer();
 
-            //RecurringJob.AddOrUpdate(() => TemperatureUpdater.UpdateTemperatureToDb(), Cron.Minutely);
+            RecurringJob.AddOrUpdate(() => TemperatureUpdater.UpdateTemperatureToDb(), Cron.Minutely);
 
         }
     }
