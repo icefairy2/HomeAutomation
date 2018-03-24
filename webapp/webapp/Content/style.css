@@ -25,6 +25,54 @@ header {
 	font-size: 50px;
 }
 
+#temp p {
+    width: 200px;
+    float: left;
+}
+
+#temperatures {
+    float: left;
+    display: block;
+
+    position: relative;
+
+    width: 540px;
+    height: 200px;
+
+    overflow: hidden;
+    overflow-y: scroll;
+
+    text-align: left;
+
+    border-collapse: collapse;
+}
+
+#temperatures tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+    #temperatures td, #temperatures th {
+        padding: 10px 10px 10px 20px;
+
+    }
+
+/*
+    #temperatures tr:first-child {
+        position: relative;
+        top: 0;
+    }
+*/
+
+    #temperatures th {
+        width: 120px;
+        background-color: lightblue;
+        color: white;
+    }
+
+#temperatures th:nth-child(3) {
+    width: 200px;
+}
+
 main {
 	width: 1024px;
 	margin: 40px auto;

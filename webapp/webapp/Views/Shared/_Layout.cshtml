@@ -4,14 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
 
-    <title>@ViewBag.Title</title>
+    <!-- <title>@ViewBag.Title</title> -->
+    <title>Home Automation</title>
 
     <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./Content/style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="./Scripts/main.js"></script>
-
 </head>
 
 <body>
@@ -25,9 +25,19 @@
     <main>
         <div id="temp">
             <p>
-                <span id="innerTemp">23° C</span>
+                Lastest mesurement:<br>
+                <span id="innerTemp"></span>
                 <br>Outside the house
             </p>
+
+            <table id="temperatures">
+                <tr>
+                    <th>ID</th>
+                    <th>Temperartures</th>
+                    <th>Date</th>
+                </tr>
+            </table>
+
         </div>
     </main>
 
@@ -35,42 +45,7 @@
     <footer>
         Copyright © Red Hot Chilli Hackers
     </footer>
-
-
-
-
-
-    <!--
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-        <!--
-
-                    
-    <!--
-        </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li></li>
-                        <li></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="container body-content">
-        -->
-            @RenderBody()
-           <!-- <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
-        </div>
-    -->
-       
+    
+    @RenderBody()
 </body>
-    </html>
+</html>
