@@ -11,7 +11,7 @@ namespace webapp.Controllers
         
         public static void UpdateTemperatureToDb()
         {
-
+            /*
             SerialPort arduinoPort = new SerialPort(CommonStrings.ComPort, 9600);
             arduinoPort.Open();
             if (arduinoPort.IsOpen)
@@ -32,7 +32,7 @@ namespace webapp.Controllers
                 throw new InvalidOperationException("Arduino port not found");
             }
             arduinoPort.Close();
-
+            */
         }
         
     }
