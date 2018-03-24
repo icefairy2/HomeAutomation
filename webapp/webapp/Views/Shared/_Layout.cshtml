@@ -11,6 +11,7 @@
     <script src="./Scripts/slider.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./Content/normalize.css">
     <link rel="stylesheet" type="text/css" href="./Content/style.css">
     <link rel="stylesheet" href="./Content/slider.css">
 
@@ -55,8 +56,14 @@
                 <br>Lastest mesurement
             </p>
         </div>
-
         <div class="clear"></div>
+
+        <div id="termostat">
+            Please set the preffered temperature inside your house: 
+            <form>
+                <input type="text" name="preferredTemp" id="preferredTemp">
+            </form>
+        </div>
 
         <div id="news">
             <div id="slide-wrap"><!-- slider --></div>
@@ -68,7 +75,6 @@
     <footer>
         Copyright © Red Hot Chilli Hackers
     </footer>
-    
-    @RenderBody()
 </body>
 </html>
+@RenderBody()
