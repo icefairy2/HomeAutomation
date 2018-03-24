@@ -199,16 +199,20 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="CommonStrings.cs" />
+    <Compile Include="Controllers\HeatsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InOutTemperaturesController.cs" />
     <Compile Include="Controllers\LampsController.cs" />
     <Compile Include="Controllers\TemperatureUpdater.cs" />
+    <Compile Include="Controllers\TurnHeatController.cs" />
     <Compile Include="Controllers\TurnLampController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WindowsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Heat.cs" />
+    <Compile Include="Models\HeatDbContext.cs" />
     <Compile Include="Models\InOutTemperature.cs" />
     <Compile Include="Models\InOutTemperatureDbContext.cs" />
     <Compile Include="Models\Lamp.cs" />
@@ -267,6 +271,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\TurnHeat\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
