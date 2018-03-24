@@ -45,25 +45,16 @@ $(function() {
     function turnTheLight(url) {
         $.ajax({
             method: "GET",
-            url: url//,
-/*            success: function (response) {
-                let length = response.length - 1;
-                setInnerTemp(response[length].IndoorTemperature + "° C");
-                setOuterTemp(response[length].OutdoorTemperature + "° C");
-
-                for (i = response.length - 1; i > 0; i--)
-                    appendoToTable(response[i].OutdoorTemperature, response[i].IndoorTemperature, response[i].DateRecorded)
-            }
-            */
+            url: url
         });
     }
-    //if ($('#lights input.checkbox_check').is(':checked')) {}
-    $('#lights input.checkbox_check').change(function () {
+
+    $('#lights .switch input:checkbox').change(function () {
         if (this.checked) {
             //this.prop('checked', false);
-            url = "http://localhost:50393/TurnLamp?turn=OFF";
+            alert("on");
         } else {
-            url = "http://localhost:50393/TurnLamp?turn=ON";
+            alert("off");
         }
 
         turnTheLight(url);
