@@ -198,15 +198,22 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="CommonStrings.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LampsController.cs" />
     <Compile Include="Controllers\TemperatureRecordsController.cs" />
     <Compile Include="Controllers\TemperatureUpdater.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\WindowsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Lamp.cs" />
+    <Compile Include="Models\LampDbContext.cs" />
     <Compile Include="Models\Temperature.cs" />
     <Compile Include="Models\TemperatureDBContext.cs" />
+    <Compile Include="Models\Window.cs" />
+    <Compile Include="Models\WindowDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

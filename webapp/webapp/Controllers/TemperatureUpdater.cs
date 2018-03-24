@@ -15,7 +15,7 @@ namespace webapp.Controllers
             arduinoPort.Open();
             if (arduinoPort.IsOpen)
             {
-                arduinoPort.Write("TEMPERATURE");
+                arduinoPort.Write("TEMPERATURE_INDOOR");
                 string temperatureString = arduinoPort.ReadLine();
                 Double temperature = Double.Parse(temperatureString);
                 db.TemperatureRecords.Add(new TemperatureRecord(temperature, DateTime.Now));

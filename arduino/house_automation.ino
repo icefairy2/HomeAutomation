@@ -15,12 +15,20 @@ enum RequestType
     error_request = -1,
     temperature_indoor_request = 0,
     temperature_outdoor_request = 1,
+	lamp_on_request = 2,
+	lamp_off_request = 3,
 };
 
 // accepted request strings
 const String requestMessage[] = {
     "TEMPERATURE_INDOOR",
     "TEMPERATURE_OUTDOOR",
+	"LAMP_ON",
+	"LAMP_OFF",
+    "LAMP_STATUS",
+    "WINDOW_STATUS",
+    "HEAT_ON",
+    "HEAT_OFF",
 };
 
 // reads the value of the resistance nrSamples times and translates the average into C degrees
@@ -43,13 +51,17 @@ void setup()
 {
     // set pin mode of temperature sensor
     pinMode(SENSOR_TEMPERATURE_INDOOR, INPUT);
+    pinMode(SENSOR_TEMPERATURE_OUTDOOR, INPUT);
     // initialize serial communication
     Serial.begin(9600);
 }
 
+double userTemperature = 25.0;
+
 // loop function, called repeatedly
 void loop()
 {
+
 }
 
 // processes the request from Serial
