@@ -95,6 +95,12 @@ footer {
 }
 /* end footer */
 
+/* termostat setter */
+#termostat {
+    margin: 50px;
+}
+/* end of termostat */
+
 /* news box*/
 #news {
     margin: 50px 0;
