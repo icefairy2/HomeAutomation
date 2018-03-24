@@ -8,7 +8,13 @@
 #define SENSOR_TEMPERATURE_OUTDOOR A1 // pin of the outdoor temperature sensor
 #define SERIES_RESISTANCE 10000 // value of the series resistance for the voltage divider
 
+#define LAMP_CONTROLLER 7 // pin of the lamp transistor
+#define HEAT_CONTROLLER 6 // pin of the heater led
+
 #define SAMPLES 10 // number of samples for analog read
+
+#define ON_STATUS true // on status for lamp and heater
+#define OFF_STATUS false // off status for lamp and heater
 
 enum RequestType
 {
@@ -17,6 +23,11 @@ enum RequestType
     temperature_outdoor_request = 1,
 	lamp_on_request = 2,
 	lamp_off_request = 3,
+    lamp_status_request = 4,
+    window_status_request = 5,
+    heat_on_request = 6,
+    heat_off_request = 7,
+    heat_status_request = 8,
 };
 
 // accepted request strings
@@ -29,7 +40,11 @@ const String requestMessage[] = {
     "WINDOW_STATUS",
     "HEAT_ON",
     "HEAT_OFF",
+    "HEAT_STATUS",
 };
+
+bool lampStatus = false;
+bool heatStatus = false;
 
 // reads the value of the resistance nrSamples times and translates the average into C degrees
 // analogPin - number of pin the voltage divider is connected to
@@ -46,12 +61,22 @@ double inline getResistanceValue(int analogPin, double seriesResistance);
 // requestType - type of received request
 String createResponse(RequestType requestType);
 
+//turns lamp on or off
+//status - true: turn lamp on, false: turn lamp off
+void turnLamp(bool status);
+
+//turns heat on or off
+//status - true: turn heat on, false: turn heat off
+void turnHeat(bool status);
+
 // setup function, called once at system initialization
 void setup()
 {
-    // set pin mode of temperature sensor
+    // set pin mode of temperature sensors
     pinMode(SENSOR_TEMPERATURE_INDOOR, INPUT);
     pinMode(SENSOR_TEMPERATURE_OUTDOOR, INPUT);
+    //set pin mode of lamp transistor
+    pinMode(LAMP_CONTROLLER, OUTPUT);
     // initialize serial communication
     Serial.begin(9600);
 }
@@ -61,13 +86,11 @@ double userTemperature = 25.0;
 // loop function, called repeatedly
 void loop()
 {
-
 }
 
 // processes the request from Serial
 void serialEvent()
 {
-
     String request = "";
 
     while (Serial.available())
@@ -90,6 +113,41 @@ void serialEvent()
     if (request == requestMessage[temperature_outdoor_request])
     {
         requestType = temperature_outdoor_request;
+    }
+
+    if (request == requestMessage[lamp_on_request])
+    {
+        requestType = lamp_on_request;
+    }
+
+    if (request == requestMessage[lamp_off_request])
+    {
+        requestType = lamp_off_request;
+    }
+
+    if (request == requestMessage[lamp_status_request])
+    {
+        requestType = lamp_status_request;
+    }
+
+    if (request == requestMessage[window_status_request])
+    {
+        requestType = window_status_request;
+    }
+
+    if (request == requestMessage[heat_on_request])
+    {
+        requestType = heat_on_request;
+    }
+
+    if (request == requestMessage[heat_off_request])
+    {
+        requestType = heat_off_request;
+    }
+
+    if (request == requestMessage[heat_status_request])
+    {
+        requestType = heat_status_request;
     }
 
     String response = createResponse(requestType);
@@ -134,10 +192,50 @@ String createResponse(RequestType requestType){
         case temperature_outdoor_request:
             response += getTemperature(SENSOR_TEMPERATURE_OUTDOOR, SERIES_RESISTANCE, SAMPLES);
             break;
+        case lamp_on_request:
+            turnLamp(LAMP_CONTROLLER, ON_STATUS);
+            response = "SUCCESS";
+            break;
+        case lamp_off_request:
+            turnLamp(LAMP_CONTROLLER, OFF_STATUS);
+            response = "SUCCESS";
+            break;
+        case lamp_status_request:
+            break;
+        case window_status_request:
+            break;
+        case heat_on_request:
+            turnHeat(HEAT_CONTROLLER, ON_STATUS);
+            response = "SUCCESS";
+            break;
+        case heat_off_request:
+            turnHeat(HEAT_CONTROLLER, OFF_STATUS);
+            response = "SUCCESS";
+            break;
+        case heat_status_request:
+            break;
         default:
             response += "ERROR";
             break;
     }
 
     return response;
+}
+
+void turnLamp(int lampPin, bool status){
+    if (status){
+        digitalWrite(lampPin, HIGH);
+    } else{
+        digitalWrite(lampPin, LOW);
+    }
+    lampStatus = status;
+}
+
+void turnHeat(int heatPin, bool status){
+    if (status){
+        digitalWrite(heatPin, HIGH);
+    } else{
+        digitalWrite(heatPin, LOW);
+    }
+    heatStatus = status;
 }
