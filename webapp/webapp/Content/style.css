@@ -1,0 +1,52 @@
+*{
+	font-family: 'Dosis', sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	height: 100px;
+	//background: #7de554;
+	background: lightblue;
+}
+
+#headercontent{
+	width: 1024px;
+	margin: 0 auto;
+}
+
+#pagetitle {
+	font-size: 36px;
+	color: white;
+	line-height: 100px;
+}
+
+#temp p span {
+	font-size: 50px;
+}
+
+main {
+	width: 1024px;
+	margin: 40px auto;
+}
+
+main p {
+	margin: 10px 0;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	
+	/* text */
+	font-size: 20px;
+	color: white;
+	line-height: 100px;
+	text-align: center;
+	
+	display: block;
+	width: 100%;
+	//background: #7de554;
+	background: lightblue;
+	height: 100px;	
+}
