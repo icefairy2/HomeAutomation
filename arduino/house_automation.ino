@@ -4,7 +4,8 @@
 #define B_COEFFICIENT 4200 // B coefficient of the thermistor
 #define TEMPERATURE_NOMINAL 25 // nominal temperature of the thermistor
 
-#define SENSOR1_PIN A0 // pin of the first temperature sensor
+#define SENSOR_TEMPERATURE_INDOOR A0 // pin of the indoor temperature sensor
+#define SENSOR_TEMPERATURE_OUTDOOR A1 // pin of the outdoor temperature sensor
 #define SERIES_RESISTANCE 10000 // value of the series resistance for the voltage divider
 
 #define SAMPLES 10 // number of samples for analog read
@@ -12,12 +13,14 @@
 enum RequestType
 {
     error_request = -1,
-    temperature_request = 0,
+    temperature_indoor_request = 0,
+    temperature_outdoor_request = 1,
 };
 
 // accepted request strings
 const String requestMessage[] = {
-    "TEMPERATURE",
+    "TEMPERATURE_INDOOR",
+    "TEMPERATURE_OUTDOOR",
 };
 
 // reads the value of the resistance nrSamples times and translates the average into C degrees
@@ -39,7 +42,7 @@ String createResponse(RequestType requestType);
 void setup()
 {
     // set pin mode of temperature sensor
-    pinMode(SENSOR1_PIN, INPUT);
+    pinMode(SENSOR_TEMPERATURE_INDOOR, INPUT);
     // initialize serial communication
     Serial.begin(9600);
 }
@@ -67,9 +70,14 @@ void serialEvent()
 
     RequestType requestType = error_request;
 
-    if (request == requestMessage[temperature_request])
+    if (request == requestMessage[temperature_indoor_request])
     {
-        requestType = temperature_request;
+        requestType = temperature_indoor_request;
+    }
+
+    if (request == requestMessage[temperature_outdoor_request])
+    {
+        requestType = temperature_outdoor_request;
     }
 
     String response = createResponse(requestType);
@@ -108,11 +116,15 @@ String createResponse(RequestType requestType){
     String response = "";
 
     switch(requestType){
-        case temperature_request:
-            response += getTemperature(SENSOR1_PIN, SERIES_RESISTANCE, SAMPLES);
+        case temperature_indoor_request:
+            response += getTemperature(SENSOR_TEMPERATURE_INDOOR, SERIES_RESISTANCE, SAMPLES);
+            break;
+        case temperature_outdoor_request:
+            response += getTemperature(SENSOR_TEMPERATURE_OUTDOOR, SERIES_RESISTANCE, SAMPLES);
             break;
         default:
             response += "ERROR";
+            break;
     }
 
     return response;
