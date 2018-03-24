@@ -36,15 +36,10 @@ const String requestMessage[] = {
     "TEMPERATURE_OUTDOOR",
 	"LAMP_ON",
 	"LAMP_OFF",
-    "LAMP_STATUS",
     "WINDOW_STATUS",
     "HEAT_ON",
     "HEAT_OFF",
-    "HEAT_STATUS",
 };
-
-bool lampStatus = false;
-bool heatStatus = false;
 
 // reads the value of the resistance nrSamples times and translates the average into C degrees
 // analogPin - number of pin the voltage divider is connected to
@@ -125,11 +120,6 @@ void serialEvent()
         requestType = lamp_off_request;
     }
 
-    if (request == requestMessage[lamp_status_request])
-    {
-        requestType = lamp_status_request;
-    }
-
     if (request == requestMessage[window_status_request])
     {
         requestType = window_status_request;
@@ -143,11 +133,6 @@ void serialEvent()
     if (request == requestMessage[heat_off_request])
     {
         requestType = heat_off_request;
-    }
-
-    if (request == requestMessage[heat_status_request])
-    {
-        requestType = heat_status_request;
     }
 
     String response = createResponse(requestType);
@@ -200,8 +185,6 @@ String createResponse(RequestType requestType){
             turnLamp(LAMP_CONTROLLER, OFF_STATUS);
             response = "SUCCESS";
             break;
-        case lamp_status_request:
-            break;
         case window_status_request:
             break;
         case heat_on_request:
@@ -211,8 +194,6 @@ String createResponse(RequestType requestType){
         case heat_off_request:
             turnHeat(HEAT_CONTROLLER, OFF_STATUS);
             response = "SUCCESS";
-            break;
-        case heat_status_request:
             break;
         default:
             response += "ERROR";
@@ -228,7 +209,6 @@ void turnLamp(int lampPin, bool status){
     } else{
         digitalWrite(lampPin, LOW);
     }
-    lampStatus = status;
 }
 
 void turnHeat(int heatPin, bool status){
@@ -237,5 +217,4 @@ void turnHeat(int heatPin, bool status){
     } else{
         digitalWrite(heatPin, LOW);
     }
-    heatStatus = status;
 }
