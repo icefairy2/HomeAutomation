@@ -18,7 +18,7 @@ namespace webapp
             app.UseHangfireDashboard();
             app.UseHangfireServer();
 
-            RecurringJob.AddOrUpdate(() => TemperatureUpdater.UpdateTemperatureToDb(), Cron.Minutely);
+            //RecurringJob.AddOrUpdate(() => TemperatureUpdater.UpdateTemperatureToDb(), Cron.Minutely);
 
         }
     }

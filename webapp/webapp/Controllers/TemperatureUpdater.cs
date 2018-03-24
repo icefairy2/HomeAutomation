@@ -8,7 +8,7 @@ namespace webapp.Controllers
     public static class TemperatureUpdater
     {
         private static TemperatureDbContext db = new TemperatureDbContext();
-
+        /*
         public static void UpdateTemperatureToDb()
         {
             SerialPort arduinoPort = new SerialPort("COM6", 9600);
@@ -27,5 +27,6 @@ namespace webapp.Controllers
             }
             arduinoPort.Close();
         }
+        */
     }
 }
