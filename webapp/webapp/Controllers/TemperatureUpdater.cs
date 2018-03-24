@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using webapp.Models;
 
 using System.IO.Ports;
@@ -14,11 +11,11 @@ namespace webapp.Controllers
 
         public static void UpdateTemperatureToDb()
         {
-            SerialPort arduinoPort = new SerialPort("COM5", 9600);
+            SerialPort arduinoPort = new SerialPort("COM6", 9600);
             arduinoPort.Open();
             if (arduinoPort.IsOpen)
             {
-                arduinoPort.WriteLine("TEMPERATURE");
+                arduinoPort.Write("TEMPERATURE");
                 string temperatureString = arduinoPort.ReadLine();
                 Double temperature = Double.Parse(temperatureString);
                 db.TemperatureRecords.Add(new TemperatureRecord(temperature, DateTime.Now));
@@ -28,7 +25,7 @@ namespace webapp.Controllers
             {
                 throw new InvalidOperationException("Arduino port not found");
             }
-
+            arduinoPort.Close();
         }
     }
 }
