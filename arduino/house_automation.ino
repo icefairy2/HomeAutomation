@@ -28,7 +28,8 @@ enum RequestType
 	lamp_on_request = 2,
 	lamp_off_request = 3,
     window_status_request = 4,
-    heater_status_request = 5,
+    set_thermostat_request = 5,
+    heater_status_request = 6,
 };
 
 // accepted request strings
@@ -47,6 +48,9 @@ NewPing sonar(WINDOW_SENSOR_TRIG, WINDOW_SENSOR_ECHO, 200);
 
 // status of the heater thermostat
 bool heaterStatus = OFF_STATUS;
+
+// thermostat temperature set by user
+int userTemperature = 25;
 
 // reads the value of the resistance nrSamples times and translates the average into C degrees
 // analogPin - number of pin the voltage divider is connected to
@@ -87,11 +91,18 @@ void setup()
     Serial.begin(9600);
 }
 
-double userTemperature = 25.0;
-
 // loop function, called repeatedly
 void loop()
 {
+    int indoorTemperature = getTemperature(SENSOR_TEMPERATURE_INDOOR, SERIES_RESISTANCE, 5);
+    bool windowOpen = getDistanceToWindow() < 5 ? false : true;
+    if (indoorTemperature < userTemperature && !windowOpen){
+        heaterStatus = ON_STATUS;
+    }else{
+        heaterStatus = OFF_STATUS;
+    }
+    digitalWrite(HEAT_CONTROLLER, heaterStatus);
+    
 }
 
 // processes the request from Serial
@@ -105,12 +116,14 @@ void serialEvent()
         if (Serial.available() > 0)
         {
             char c = Serial.read();
-            if (c == '\n'){
+            if (c == '#'){
                 break;
             } //gets one byte from serial buffer
             request += c;           //makes the string readString
         }
     }
+
+    Serial.println(request);
 
     RequestType requestType = error_request;
 
@@ -139,9 +152,14 @@ void serialEvent()
         requestType = window_status_request;
     }
 
-    if (request == requestMessage[heater_status_request])
-    
+    if (request == requestMessage[set_thermostat_request]){
+        requestType = set_thermostat_request;
+    }
 
+    if (request == requestMessage[heater_status_request]){
+        requestType = heater_status_request;
+    }
+    
     String response = createResponse(requestType);
 
     Serial.println(response);
@@ -176,7 +194,7 @@ double inline getTemperature(int analogPin, double seriesResistance, int nrSampl
 
 String inline createResponse(RequestType requestType){
     String response = "";
-
+    String temp = "";
     int cm = 0;
 
     switch(requestType){
@@ -197,6 +215,13 @@ String inline createResponse(RequestType requestType){
         case window_status_request:
             cm = getDistanceToWindow();
             response += cm > 5 ? "WINDOW_OPEN" : "WINDOW_CLOSED";
+            break;
+        case set_thermostat_request:
+            while (Serial.available()){
+                temp += (char) Serial.read();
+            }
+            userTemperature = temp.toInt();
+            response += "SUCCESS";
             break;
         case heater_status_request:
             response += heaterStatus ? "HEATER_ON" : "HEATER_OFF";
