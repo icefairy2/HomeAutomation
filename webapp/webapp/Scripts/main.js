@@ -46,6 +46,10 @@ $(function() {
         // $('#preferredTemp').val();  do something whit this
     })
 
+    $('#furnace').text("The furnace is burning like HELL (gives you warmth)!");
+    $('#furnace').text("The We Are out of HELL(fire)!");
+    $('.heating').addClass('on');
+    //  $('.heating').removeClass('on');
 
 
     // lights -------------------------------------------------------------------
