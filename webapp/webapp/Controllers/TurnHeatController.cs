@@ -14,8 +14,7 @@ namespace webapp.Controllers
         // GET: TurnHeat
         public ActionResult Index()
         {
-            SerialPort arduinoPort = new SerialPort(CommonStrings.ComPort, 9600);
-            arduinoPort.Open();
+            SerialPort arduinoPort = PortController.GetArduinoPort();
             if (arduinoPort.IsOpen)
             {
                 string turn = Request.QueryString["turn"];
@@ -31,7 +30,6 @@ namespace webapp.Controllers
             {
                 throw new InvalidOperationException("Arduino port not found");
             }
-            arduinoPort.Close();
             return View();
         }
     }
