@@ -21,7 +21,7 @@ namespace webapp.Controllers
         {
             DateTime yesterday = DateTime.Now.AddDays(-1);
             // return all lamps in the last 24 hours
-            return db.Lamps.Where(lamp => lamp.DateRecorded > yesterday);
+            return db.Lamps.Where(lamp => lamp.DateRecorded > yesterday).OrderBy(lamp => lamp.DateRecorded);
         }
 
         // GET: api/Lamps/5
