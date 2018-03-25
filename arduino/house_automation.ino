@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "NewPing.h"
 
 #define THERMISTOR_NOMINAL 6800 // nominal resistance value of the thermistor at nominal temperature
 #define B_COEFFICIENT 4200 // B coefficient of the thermistor
@@ -10,6 +11,9 @@
 
 #define LAMP_CONTROLLER 7 // pin of the lamp transistor
 #define HEAT_CONTROLLER 6 // pin of the heater led
+
+#define WINDOW_SENSOR_ECHO 11 // echo pin of the ultrasound sensor 
+#define WINDOW_SENSOR_TRIG 12 // trigger pin of the ultrasound sensor 
 
 #define SAMPLES 10 // number of samples for analog read
 
@@ -23,11 +27,9 @@ enum RequestType
     temperature_outdoor_request = 1,
 	lamp_on_request = 2,
 	lamp_off_request = 3,
-    lamp_status_request = 4,
-    window_status_request = 5,
-    heat_on_request = 6,
-    heat_off_request = 7,
-    heat_status_request = 8,
+    window_status_request = 4,
+    heat_on_request = 5,
+    heat_off_request = 6,
 };
 
 // accepted request strings
@@ -40,6 +42,9 @@ const String requestMessage[] = {
     "HEAT_ON",
     "HEAT_OFF",
 };
+
+// sonar used to get distance to window
+NewPing sonar(WINDOW_SENSOR_TRIG, WINDOW_SENSOR_ECHO, 200);
 
 // reads the value of the resistance nrSamples times and translates the average into C degrees
 // analogPin - number of pin the voltage divider is connected to
@@ -54,15 +59,18 @@ double inline getResistanceValue(int analogPin, double seriesResistance);
 
 // creates the response string given the type of the request
 // requestType - type of received request
-String createResponse(RequestType requestType);
+String inline createResponse(RequestType requestType);
 
-//turns lamp on or off
-//status - true: turn lamp on, false: turn lamp off
-void turnLamp(bool status);
+// turns lamp on or off
+// status - ON_STATUS: turn lamp on, OFF_STATUS: turn lamp off
+void inline turnLamp(int lampPin, bool status);
 
-//turns heat on or off
-//status - true: turn heat on, false: turn heat off
-void turnHeat(bool status);
+// turns heat on or off
+// status - ON_STATUS: turn heat on, OFF_STATUS: turn heat off
+void inline turnHeat(int heatPin, bool status);
+
+// returns distance to window in cm
+int getDistanceToWindow();
 
 // setup function, called once at system initialization
 void setup()
@@ -167,8 +175,10 @@ double inline getTemperature(int analogPin, double seriesResistance, int nrSampl
     return steinhart;
 }
 
-String createResponse(RequestType requestType){
+String inline createResponse(RequestType requestType){
     String response = "";
+
+    int cm = 0;
 
     switch(requestType){
         case temperature_indoor_request:
@@ -179,21 +189,23 @@ String createResponse(RequestType requestType){
             break;
         case lamp_on_request:
             turnLamp(LAMP_CONTROLLER, ON_STATUS);
-            response = "SUCCESS";
+            response += "SUCCESS";
             break;
         case lamp_off_request:
             turnLamp(LAMP_CONTROLLER, OFF_STATUS);
-            response = "SUCCESS";
+            response += "SUCCESS";
             break;
         case window_status_request:
+            cm = getDistanceToWindow();
+            response += cm > 5 ? "WINDOW_OPEN" : "WINDOW_CLOSED";
             break;
         case heat_on_request:
             turnHeat(HEAT_CONTROLLER, ON_STATUS);
-            response = "SUCCESS";
+            response += "SUCCESS";
             break;
         case heat_off_request:
             turnHeat(HEAT_CONTROLLER, OFF_STATUS);
-            response = "SUCCESS";
+            response += "SUCCESS";
             break;
         default:
             response += "ERROR";
@@ -203,7 +215,7 @@ String createResponse(RequestType requestType){
     return response;
 }
 
-void turnLamp(int lampPin, bool status){
+void inline turnLamp(int lampPin, bool status){
     if (status){
         digitalWrite(lampPin, HIGH);
     } else{
@@ -211,10 +223,21 @@ void turnLamp(int lampPin, bool status){
     }
 }
 
-void turnHeat(int heatPin, bool status){
+void inline turnHeat(int heatPin, bool status){
     if (status){
         digitalWrite(heatPin, HIGH);
     } else{
         digitalWrite(heatPin, LOW);
     }
+}
+
+int getDistanceToWindow(){
+    // get echo time
+    int echotime = sonar.ping_median(5);
+    // get cm
+    int cm = sonar.convert_cm(echotime);
+    if (cm == 0){
+        cm = 200;
+    }
+    return cm;
 }
