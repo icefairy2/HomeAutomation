@@ -47,7 +47,7 @@ $(function() {
         let url = "TurnHeat/temperature=" + setupValue;
 
         $.ajax({
-            method: 'GET'
+            method: 'GET',
             url: url
         })
 
@@ -56,7 +56,7 @@ $(function() {
 
     window.setInterval(function () {
         checkFurnes();
-        console.log("seconds");
+        //console.log("seconds");
     }, 1000);
 
     function checkFurnes() {
