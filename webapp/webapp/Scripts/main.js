@@ -37,10 +37,31 @@ $(function() {
         $('#temperatures').append(row);
     }
 
-    url = "http://localhost:50393/api/InOutTemperatures/";
+    url = "api/InOutTemperatures/";
     getAllTemps(url);
 
+    // Termostat ----------------------------------------------------------------
+    $('#termostat button').click(function (e) {
+        e.preventDefault();
+        // $('#preferredTemp').val();  do something whit this
+    })
+
+
+
     // lights -------------------------------------------------------------------
+    function getCurrentState() {
+        $.ajax({
+            method: "GET",
+            url: "api/Lamps",
+            success: function (response) {
+                let last = response.length - 1;
+                $('#lights .switch input:checkbox').prop('checked', response[last].IsTurnedOn);
+
+                $('#lights p').html(response[last].IsTurnedOn ? 'Turn off the <b>lights</b>, Save the world!' : 'Keep the <b>lights</b>. off, Save the world!')
+            }
+        })
+    }
+    getCurrentState();
 
     function turnTheLight(url) {
         $.ajax({
@@ -60,6 +81,62 @@ $(function() {
         turnTheLight(url);
     })
 
+
+
+    //-----------------------------------------------------------
+    function create_timechart(diffMins) {
+        $.ajax({
+            method: "GET",
+            url: "api/Lamps",
+            success: function (response) {
+                let length = response.length;
+                //
+                google.charts.load("current", { packages: ["timeline"] });
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+
+                    var container = document.getElementById('timechart');
+                    var chart = new google.visualization.Timeline(container);
+                    var dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn({ type: 'string', id: 'status' });
+                    dataTable.addColumn({ type: 'date', id: 'Start' });
+                    dataTable.addColumn({ type: 'date', id: 'End' });
+                    //
+
+                    let onHours;
+                    let diffMins = 0;
+
+                    x = [];
+                    for (i = 0; i < length - 2; i++) {
+                        x.push([response[i].IsTurnedOn ? "on" : "off", new Date(response[i].DateRecorded), new Date(response[i + 1].DateRecorded)]);
+                        if (response[i].IsTurnedOn) {
+                            onHours = Math.floor(Math.abs(new Date((new Date(response[i + 1].DateRecorded) - new Date(response[i].DateRecorded))/1000/60)));
+                            diffMins += onHours;
+                        }
+                    }
+                    //x.push([response[length - 1].IsTurnedOn ? "on" : "off", new Date(response[length-1].DateRecorded), new Date()])
+
+                    change_wattage(60, diffMins);
+                        
+                    dataTable.addRows(x);
+                    chart.draw(dataTable);
+                } 
+            }
+        })
+    }
+    create_timechart();
+
+    // change wattage -----------------------------------------------------------
+    function change_wattage(Wattage, diffMins){
+        let consumption = Wattage * (diffMins / 60);
+        $('#calculatedConsumption').html("Your daily consumption, on a <b>" + Wattage + "W</b> lightbulb: <b>" + consumption + "Wh</b> in total <b><span id='diffMins'>" + diffMins + "</span> minutes</b>");
+        $('#differentWattage').val(Wattage);
+    }
+
+    $('#setDifferentWattage button').click(function (e) {
+        e.preventDefault();
+        change_wattage($('#differentWattage').val(), $('#diffMins').text());
+    })
 
     // news ---------------------------------------------------------------------
     function getNews(newsUrl) {
@@ -81,7 +158,7 @@ $(function() {
 
     function setNews(news) {
         slider('#slide-wrap', 4, 1, news.articles);
-        console.log(news);
+        //console.log(news);
         $('#newsStatus').text(news.status);
     }
 });

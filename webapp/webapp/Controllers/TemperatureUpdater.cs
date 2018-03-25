@@ -7,11 +7,12 @@ namespace webapp.Controllers
 {
     public static class TemperatureUpdater
     {
-        private static InOutTemperatureDbContext db = new InOutTemperatureDbContext();
-        
+        private static InOutTemperatureDbContext dbTemp = new InOutTemperatureDbContext();
+        private static WindowDbContext dbWind = new WindowDbContext();
+
         public static void UpdateTemperatureToDb()
         {
-            /*
+            
             SerialPort arduinoPort = new SerialPort(CommonStrings.ComPort, 9600);
             arduinoPort.Open();
             if (arduinoPort.IsOpen)
@@ -24,15 +25,23 @@ namespace webapp.Controllers
                 string outTemperatureString = arduinoPort.ReadLine();
                 Double outTemperature = Double.Parse(outTemperatureString);
 
-                db.InOutTemperatures.Add(new InOutTemperature(temperature, outTemperature, DateTime.Now));
-                db.SaveChanges();
+                arduinoPort.Write("WINDOW_STATUS");
+                string windowStatusString = arduinoPort.ReadLine();
+                string cleanWindowStatus = windowStatusString.Trim();
+                bool windowOpen = (cleanWindowStatus == "WINDOW_OPEN");
+
+                dbWind.Windows.Add(new Window(windowOpen, DateTime.Now));
+                dbWind.SaveChanges();
+
+                dbTemp.InOutTemperatures.Add(new InOutTemperature(temperature, outTemperature, DateTime.Now));
+                dbTemp.SaveChanges();
             }
             else
             {
                 throw new InvalidOperationException("Arduino port not found");
             }
             arduinoPort.Close();
-            */
+            
         }
         
     }

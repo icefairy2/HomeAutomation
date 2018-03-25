@@ -22,6 +22,8 @@
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 </head>
 
@@ -59,24 +61,37 @@
         <div class="clear"></div>
 
         <div id="termostat">
-            Please set the preffered temperature inside your house: 
+            Please set the preffered temperature inside your house:
             <form>
                 <input type="text" name="preferredTemp" id="preferredTemp">
                 <button>Set</button>
             </form>
+            
+            <div class="heating"></div>
         </div>
 
         <div id="lights">
-            Turn off the light, Save the world!
             <form>
                 <label class="switch">
                     <input type="checkbox">
                     <span class="slider round"></span>
                 </label>
             </form>
+            <p></p>
+        </div>
+        <div class="clear"></div>
+
+        <div id="timechart"></div>
+        <div id="setDifferentWattage">
+            <div id="calculatedConsumption"></div>
+            <form>
+                <input type="text" name="differentWattage" id="differentWattage">
+                <button>Set Different Wattage</button>
+            </form>
         </div>
 
         <div id="news">
+
             <div id="slide-wrap"><!-- slider --></div>
             <!-- <span class="pull-right text-muted">* see console for real-time event log</span> -->
         </div>
@@ -84,7 +99,7 @@
 
 
     <footer>
-        Copyright © Red Hot Chilli Hackers
+        Copyright © Red Hot Chilli Hackers - 2018
     </footer>
 </body>
 </html>

@@ -60,7 +60,7 @@ function slider(id, pause, animationSpeed, obj) {
 
         // Engage slider auto-scroll
 
-        console.log('slider started');
+        //console.log('slider started');
         interval = setInterval(function () {
 
             $slideContainer.animate({ 'margin-left': '-=' + slide_width }, animationSpeed, function () {
@@ -71,7 +71,7 @@ function slider(id, pause, animationSpeed, obj) {
                     margin = slide_width;
                     $slideContainer.css('margin-left', '-' + margin + 'px');
                 }
-                console.log('slide: ' + currentSlide);
+                //console.log('slide: ' + currentSlide);
 
             });
         }, pause);
@@ -87,12 +87,12 @@ function slider(id, pause, animationSpeed, obj) {
 
             currentSlide++;
             if (currentSlide === $slides.length - 1) {
-                console.log('reset');
+                //console.log('reset');
                 currentSlide = 1;
                 margin = slide_width;
                 $slideContainer.css('margin-left', '-' + margin + 'px');
             }
-            console.log('next slide --> ' + currentSlide);
+            //console.log('next slide --> ' + currentSlide);
         });
 
         // Reset the slide interval
@@ -110,12 +110,12 @@ function slider(id, pause, animationSpeed, obj) {
 
             currentSlide--;
             if (currentSlide === 0) {
-                console.log('reset');
+                //console.log('reset');
                 currentSlide = $slides.length - 2;
                 margin = slide_width * currentSlide - 1;
                 $slideContainer.css('margin-left', '-' + margin + 'px');
             }
-            console.log('previous slide --> ' + currentSlide);
+            //console.log('previous slide --> ' + currentSlide);
         });
 
         // Reset the slide interval
@@ -130,7 +130,7 @@ function slider(id, pause, animationSpeed, obj) {
         // Stops Slider Auto-scroll (on mouseover)
 
         clearInterval(interval);
-        console.log('slider paused');
+        //console.log('slider paused');
 
     }
 

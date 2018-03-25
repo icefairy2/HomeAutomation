@@ -16,10 +16,12 @@ namespace webapp.Controllers
     {
         private LampDbContext db = new LampDbContext();
 
-        // GET: api/Lamps
-        public IQueryable<Lamp> GetLamps()
+        // GET: api/LampsToday
+        public IQueryable<Lamp> GetLampsToday()
         {
-            return db.Lamps;
+            DateTime yesterday = DateTime.Now.AddDays(-1);
+            // return all lamps in the last 24 hours
+            return db.Lamps.Where(lamp => lamp.DateRecorded > yesterday);
         }
 
         // GET: api/Lamps/5
