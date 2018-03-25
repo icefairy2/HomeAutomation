@@ -103,13 +103,22 @@ footer {
 
 /* termostat setter */
 #lights {
-    margin: 100px 0 50px 0;
+    margin: 200px 0 50px 0;
+}
+
+timechart {
+    z-index: 1 !important;
+}
+
+#setDifferentWattage {
+    margin: -30px 0 0 0;
+    z-index: 100 !important;
 }
 /* end of termostat */
 
 /* news box*/
 #news {
-    margin: 100px 0 50px 0;
+    margin: 200px 0 50px 0;
 }
 /* end news box*/
 

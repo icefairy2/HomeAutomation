@@ -119,7 +119,8 @@ $(function() {
     // change wattage -----------------------------------------------------------
     function change_wattage(Wattage, diffMins){
         let consumption = Wattage * (diffMins / 60);
-        $('#calculatedConsumption').html("Your daily consumption, assumed on a " + Wattage + "W lightbulb: " + consumption + "Wh in total <span id='diffMins'>" + diffMins + "</span> minutes");
+        $('#calculatedConsumption').html("Your daily consumption, on a <b>" + Wattage + "W</b> lightbulb: <b>" + consumption + "Wh</b> in total <b><span id='diffMins'>" + diffMins + "</span> minutes</b>");
+        $('#differentWattage').val(Wattage);
     }
 
     $('#setDifferentWattage button').click(function (e) {
