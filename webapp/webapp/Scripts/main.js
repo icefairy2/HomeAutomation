@@ -54,11 +54,28 @@ $(function() {
         alert("Temperature threshold has been set!");
     })
 
-    $('#furnace').text("The furnace is burning like HELL (gives you warmth)!");
-    $('#furnace').text("The We Are out of HELL(fire)!");
-    $('.heating').addClass('on');
-    //  $('.heating').removeClass('on');
+    window.setInterval(function () {
+        checkFurnes();
+        console.log("seconds");
+    }, 1000);
 
+    function checkFurnes() {
+        $.ajax({
+            method: "GET",
+            url: "api/Heats",
+            success: function (response) {
+                let last = response.length - 1;
+
+                if (response[last].IsTurnedOn) {
+                    $('#furnace').text("The furnace is burning like HELL (gives you warmth)!");
+                    $('.heating').addClass('on');
+                } else {
+                    $('#furnace').text("The We Are out of HELL(fire)!");
+                    $('.heating').removeClass('on');
+                }
+            }
+        })
+    }
 
     // lights -------------------------------------------------------------------
     function getCurrentState() {
