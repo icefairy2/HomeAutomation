@@ -9,6 +9,7 @@ namespace webapp.Controllers
     {
         private static InOutTemperatureDbContext dbTemp = new InOutTemperatureDbContext();
         private static WindowDbContext dbWind = new WindowDbContext();
+        private static HeatDbContext dbHeat = new HeatDbContext();
 
         public static void UpdateTemperatureToDb()
         {
@@ -24,6 +25,9 @@ namespace webapp.Controllers
                 string outTemperatureString = arduinoPort.ReadLine();
                 Double outTemperature = Double.Parse(outTemperatureString);
 
+                dbTemp.InOutTemperatures.Add(new InOutTemperature(temperature, outTemperature, DateTime.Now));
+                dbTemp.SaveChanges();
+
                 arduinoPort.Write("WINDOW_STATUS");
                 string windowStatusString = arduinoPort.ReadLine();
                 string cleanWindowStatus = windowStatusString.Trim();
@@ -32,8 +36,14 @@ namespace webapp.Controllers
                 dbWind.Windows.Add(new Window(windowOpen, DateTime.Now));
                 dbWind.SaveChanges();
 
-                dbTemp.InOutTemperatures.Add(new InOutTemperature(temperature, outTemperature, DateTime.Now));
-                dbTemp.SaveChanges();
+                arduinoPort.Write("HEATER_STATUS");
+                string heatStatusString = arduinoPort.ReadLine();
+                string eanHeaterStatus = heatStatusString.Trim();
+                bool heatOn = (eanHeaterStatus == "HEATER_ON");
+
+                dbHeat.Heats.Add(new Heat(heatOn, DateTime.Now));
+                dbHeat.SaveChanges();
+
             }
             else
             {

@@ -58,7 +58,7 @@ $(function() {
     window.setInterval(function () {
         checkFurnes();
         //console.log("seconds");
-    }, 60000);
+    }, 1000);
 
     function checkFurnes() {
         $.ajax({
