@@ -43,9 +43,21 @@ $(function() {
     // Termostat ----------------------------------------------------------------
     $('#termostat button').click(function (e) {
         e.preventDefault();
-        // $('#preferredTemp').val();  do something whit this
+        let setupValue = $('#preferredTemp').val();
+        let url = "TurnHeat/temperature=" + setupValue;
+
+        $.ajax({
+            method: 'GET'
+            url: url
+        })
+
+        alert("Temperature threshold has been set!");
     })
 
+    $('#furnace').text("The furnace is burning like HELL (gives you warmth)!");
+    $('#furnace').text("The We Are out of HELL(fire)!");
+    $('.heating').addClass('on');
+    //  $('.heating').removeClass('on');
 
 
     // lights -------------------------------------------------------------------
