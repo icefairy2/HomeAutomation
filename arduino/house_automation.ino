@@ -5,8 +5,8 @@
 #define B_COEFFICIENT 4200 // B coefficient of the thermistor
 #define TEMPERATURE_NOMINAL 25 // nominal temperature of the thermistor
 
-#define SENSOR_TEMPERATURE_INDOOR A0 // pin of the indoor temperature sensor
-#define SENSOR_TEMPERATURE_OUTDOOR A1 // pin of the outdoor temperature sensor
+#define SENSOR_TEMPERATURE_INDOOR A1 // pin of the indoor temperature sensor
+#define SENSOR_TEMPERATURE_OUTDOOR A0 // pin of the outdoor temperature sensor
 #define SERIES_RESISTANCE 10000 // value of the series resistance for the voltage divider
 
 #define LAMP_CONTROLLER 7 // pin of the lamp transistor
@@ -28,8 +28,7 @@ enum RequestType
 	lamp_on_request = 2,
 	lamp_off_request = 3,
     window_status_request = 4,
-    heat_on_request = 5,
-    heat_off_request = 6,
+    heater_status_request = 5,
 };
 
 // accepted request strings
@@ -39,12 +38,15 @@ const String requestMessage[] = {
 	"LAMP_ON",
 	"LAMP_OFF",
     "WINDOW_STATUS",
-    "HEAT_ON",
-    "HEAT_OFF",
+    "SET_THERMOSTAT",
+    "HEATER_STATUS",
 };
 
 // sonar used to get distance to window
 NewPing sonar(WINDOW_SENSOR_TRIG, WINDOW_SENSOR_ECHO, 200);
+
+// status of the heater thermostat
+bool heaterStatus = OFF_STATUS;
 
 // reads the value of the resistance nrSamples times and translates the average into C degrees
 // analogPin - number of pin the voltage divider is connected to
@@ -80,6 +82,7 @@ void setup()
     pinMode(SENSOR_TEMPERATURE_OUTDOOR, INPUT);
     //set pin mode of lamp transistor
     pinMode(LAMP_CONTROLLER, OUTPUT);
+    pinMode(HEAT_CONTROLLER, OUTPUT);
     // initialize serial communication
     Serial.begin(9600);
 }
@@ -101,7 +104,10 @@ void serialEvent()
         delay(3); //delay to allow buffer to fill
         if (Serial.available() > 0)
         {
-            char c = Serial.read(); //gets one byte from serial buffer
+            char c = Serial.read();
+            if (c == '\n'){
+                break;
+            } //gets one byte from serial buffer
             request += c;           //makes the string readString
         }
     }
@@ -133,15 +139,8 @@ void serialEvent()
         requestType = window_status_request;
     }
 
-    if (request == requestMessage[heat_on_request])
-    {
-        requestType = heat_on_request;
-    }
-
-    if (request == requestMessage[heat_off_request])
-    {
-        requestType = heat_off_request;
-    }
+    if (request == requestMessage[heater_status_request])
+    
 
     String response = createResponse(requestType);
 
@@ -199,13 +198,8 @@ String inline createResponse(RequestType requestType){
             cm = getDistanceToWindow();
             response += cm > 5 ? "WINDOW_OPEN" : "WINDOW_CLOSED";
             break;
-        case heat_on_request:
-            turnHeat(HEAT_CONTROLLER, ON_STATUS);
-            response += "SUCCESS";
-            break;
-        case heat_off_request:
-            turnHeat(HEAT_CONTROLLER, OFF_STATUS);
-            response += "SUCCESS";
+        case heater_status_request:
+            response += heaterStatus ? "HEATER_ON" : "HEATER_OFF";
             break;
         default:
             response += "ERROR";
