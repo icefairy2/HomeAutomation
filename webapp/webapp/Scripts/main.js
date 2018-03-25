@@ -72,8 +72,9 @@ $(function() {
     })
 
 
+
     //-----------------------------------------------------------
-    function create_timechart() {
+    function create_timechart(diffMins) {
         $.ajax({
             method: "GET",
             url: "api/Lamps",
@@ -93,7 +94,7 @@ $(function() {
                     //
 
                     let onHours;
-                    var diffMins = 0;
+                    let diffMins = 0;
 
                     x = [];
                     for (i = 0; i < length - 2; i++) {
@@ -105,17 +106,26 @@ $(function() {
                     }
                     //x.push([response[length - 1].IsTurnedOn ? "on" : "off", new Date(response[length-1].DateRecorded), new Date()])
 
+                    change_wattage(60, diffMins);
+
                     dataTable.addRows(x);
                     chart.draw(dataTable);
-
-                    let consumption = 60 * (diffMins / 60);
-                    $('#calculatedConsumption').text("Your daily consumption, assumed on a 60W lightbulb: " + consumption + "Wh in total " + diffMins + " minutes");
                 } 
             }
         })
     }
     create_timechart();
-    //-----------------------------------------------------------
+
+    // change wattage -----------------------------------------------------------
+    function change_wattage(Wattage, diffMins){
+        let consumption = Wattage * (diffMins / 60);
+        $('#calculatedConsumption').html("Your daily consumption, assumed on a " + Wattage + "W lightbulb: " + consumption + "Wh in total <span id='diffMins'>" + diffMins + "</span> minutes");
+    }
+
+    $('#setDifferentWattage button').click(function (e) {
+        e.preventDefault();
+        change_wattage($('#differentWattage').val(), $('#diffMins').text());
+    })
 
     // news ---------------------------------------------------------------------
     function getNews(newsUrl) {

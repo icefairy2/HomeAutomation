@@ -97,13 +97,19 @@ footer {
 
 /* termostat setter */
 #termostat {
-    margin: 50px;
+    margin: 50px 0;
+}
+/* end of termostat */
+
+/* termostat setter */
+#lights {
+    margin: 100px 0 50px 0;
 }
 /* end of termostat */
 
 /* news box*/
 #news {
-    margin: 50px 0;
+    margin: 100px 0 50px 0;
 }
 /* end news box*/
 
