@@ -41,6 +41,17 @@ $(function() {
     getAllTemps(url);
 
     // lights -------------------------------------------------------------------
+    function getCurrentState() {
+        $.ajax({
+            method: "GET",
+            url: "api/Lamps",
+            success: function (response) {
+                let last = response.length - 1;
+                $('#lights .switch input:checkbox').prop('checked', response[last].IsTurnedOn);
+            }
+        })
+    }
+    getCurrentState();
 
     function turnTheLight(url) {
         $.ajax({
@@ -60,6 +71,44 @@ $(function() {
         turnTheLight(url);
     })
 
+
+    //-----------------------------------------------------------
+    function create_timechart() {
+        $.ajax({
+            method: "GET",
+            url: "api/Lamps",
+            success: function (response) {
+                console.log(response);
+                let length = response.length;
+                //
+                google.charts.load("current", { packages: ["timeline"] });
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+
+                    var container = document.getElementById('timechart');
+                    var chart = new google.visualization.Timeline(container);
+                    var dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn({ type: 'string', id: 'status' });
+                    dataTable.addColumn({ type: 'date', id: 'Start' });
+                    dataTable.addColumn({ type: 'date', id: 'End' });
+                    //
+
+                    x = [];
+                    for (i = 0; i < length - 2; i++) {
+                        x.push([response[i].IsTurnedOn?"on":"off", new Date(response[i].DateRecorded), new Date(response[i+1].DateRecorded)])
+                        //dataTable.addRows(['President', new Date(1789, 3, 30), new Date(1797, 2, 4)]);
+                    }
+                    //x.push([response[length - 1].IsTurnedOn ? "on" : "off", new Date(response[length-1].DateRecorded), new Date()])
+
+                    dataTable.addRows(x);
+
+                    chart.draw(dataTable);
+                }
+            }
+        })
+    }
+    create_timechart();
+    //-----------------------------------------------------------
 
     // news ---------------------------------------------------------------------
     function getNews(newsUrl) {
@@ -81,7 +130,7 @@ $(function() {
 
     function setNews(news) {
         slider('#slide-wrap', 4, 1, news.articles);
-        console.log(news);
+        //console.log(news);
         $('#newsStatus').text(news.status);
     }
 });
