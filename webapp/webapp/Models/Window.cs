@@ -15,9 +15,10 @@ namespace webapp.Models
         {
         }
 
-        public Window(bool isOpen)
+        public Window(bool isOpen, DateTime date)
         {
             IsOpen = isOpen;
+            DateRecorded = date;
         }
     }
 }
