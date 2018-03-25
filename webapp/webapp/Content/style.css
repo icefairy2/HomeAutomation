@@ -21,7 +21,7 @@ header {
 /* main content/cotainer */
 main {
     width: 1024px;
-    margin: 40px auto;
+    margin: 50px auto;
 }
 
     main p {
@@ -97,7 +97,33 @@ footer {
 
 /* termostat setter */
 #termostat {
-    margin: 50px 0;
+    margin: 20px 0 100px 0;
+}
+
+    #termostat form {
+        margin-top: 5px;
+    }
+
+.heating {
+    float : right;
+    margin-right: 300px;
+    width: 0;
+    height: 0;
+    padding: 5px;
+    background: #AAA;
+    box-shadow: 0px 0px 10px 15px #AAA;
+    
+
+    border-radius: 10px;
+
+    transition: 1s;
+}
+
+    .heating content {
+        background: #1F1;
+        box-shadow: 0px 0px 10px 15px #1D1;
+    }
+
 }
 /* end of termostat */
 
@@ -106,20 +132,34 @@ footer {
     margin: 200px 0 50px 0;
 }
 
+#lights form {
+    display: inline-block;
+    float: left;
+    margin-right: 20px;
+}
 
-timechart {
-    z-index: 1 !important;
+#lights p {
+    float: left;
+}
+
+#timechart {
+    padding-top: 40px;
+    height: 200px !important;
 }
 
 #setDifferentWattage {
-    margin: -30px 0 0 0;
     z-index: 100 !important;
 }
+
+#setDifferentWattage {
+    margin-top: 5px;
+}
+
 /* end of termostat */
 
 /* news box*/
 #news {
-    margin: 200px 0 50px 0;
+    margin: 100px 0 50px 0;
 }
 /* end news box*/
 
@@ -184,7 +224,30 @@ input:checked + .slider:before {
     border-radius: 34px;
 }
 
-    .slider.round:before {
-        border-radius: 50%;
-    }
+.slider.round:before {
+    border-radius: 50%;
+}
 /* end of toggle buttons */
+
+/* buttons */
+button {
+    background: #008CBA;
+    border: none;
+    color: white !important;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #2196F3;
+}
+
+input {
+    padding: 10px 22px;
+}
+/* end of buttons */

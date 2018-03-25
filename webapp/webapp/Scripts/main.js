@@ -37,8 +37,16 @@ $(function() {
         $('#temperatures').append(row);
     }
 
-    url = "http://localhost:50393/api/InOutTemperatures/";
+    url = "api/InOutTemperatures/";
     getAllTemps(url);
+
+    // Termostat ----------------------------------------------------------------
+    $('#termostat button').click(function (e) {
+        e.preventDefault();
+        // $('#preferredTemp').val();  do something whit this
+    })
+
+
 
     // lights -------------------------------------------------------------------
     function getCurrentState() {
@@ -109,7 +117,7 @@ $(function() {
                     //x.push([response[length - 1].IsTurnedOn ? "on" : "off", new Date(response[length-1].DateRecorded), new Date()])
 
                     change_wattage(60, diffMins);
-
+                        
                     dataTable.addRows(x);
                     chart.draw(dataTable);
                 } 
