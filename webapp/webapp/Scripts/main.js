@@ -48,6 +48,8 @@ $(function() {
             success: function (response) {
                 let last = response.length - 1;
                 $('#lights .switch input:checkbox').prop('checked', response[last].IsTurnedOn);
+
+                $('#lights p').html(response[last].IsTurnedOn ? 'Turn off the <b>lights</b>, Save the world!' : 'Keep the <b>lights</b>. off, Save the world!')
             }
         })
     }
