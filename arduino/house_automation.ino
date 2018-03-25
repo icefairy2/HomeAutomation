@@ -2,22 +2,22 @@
 #include "NewPing.h"
 
 #define THERMISTOR_NOMINAL 6800 // nominal resistance value of the thermistor at nominal temperature
-#define B_COEFFICIENT 4200 // B coefficient of the thermistor
-#define TEMPERATURE_NOMINAL 25 // nominal temperature of the thermistor
+#define B_COEFFICIENT 4200      // B coefficient of the thermistor
+#define TEMPERATURE_NOMINAL 25  // nominal temperature of the thermistor
 
-#define SENSOR_TEMPERATURE_INDOOR A1 // pin of the indoor temperature sensor
+#define SENSOR_TEMPERATURE_INDOOR A1  // pin of the indoor temperature sensor
 #define SENSOR_TEMPERATURE_OUTDOOR A0 // pin of the outdoor temperature sensor
-#define SERIES_RESISTANCE 10000 // value of the series resistance for the voltage divider
+#define SERIES_RESISTANCE 10000       // value of the series resistance for the voltage divider
 
 #define LAMP_CONTROLLER 7 // pin of the lamp transistor
 #define HEAT_CONTROLLER 6 // pin of the heater led
 
-#define WINDOW_SENSOR_ECHO 11 // echo pin of the ultrasound sensor 
-#define WINDOW_SENSOR_TRIG 12 // trigger pin of the ultrasound sensor 
+#define WINDOW_SENSOR_ECHO 11 // echo pin of the ultrasound sensor
+#define WINDOW_SENSOR_TRIG 12 // trigger pin of the ultrasound sensor
 
 #define SAMPLES 10 // number of samples for analog read
 
-#define ON_STATUS true // on status for lamp and heater
+#define ON_STATUS true   // on status for lamp and heater
 #define OFF_STATUS false // off status for lamp and heater
 
 enum RequestType
@@ -25,8 +25,8 @@ enum RequestType
     error_request = -1,
     temperature_indoor_request = 0,
     temperature_outdoor_request = 1,
-	lamp_on_request = 2,
-	lamp_off_request = 3,
+    lamp_on_request = 2,
+    lamp_off_request = 3,
     window_status_request = 4,
     set_thermostat_request = 5,
     heater_status_request = 6,
@@ -34,13 +34,13 @@ enum RequestType
 
 // accepted request strings
 const String requestMessage[] = {
-    "TEMPERATURE_INDOOR",
-    "TEMPERATURE_OUTDOOR",
-	"LAMP_ON",
-	"LAMP_OFF",
-    "WINDOW_STATUS",
-    "SET_THERMOSTAT",
-    "HEATER_STATUS",
+    "TEMPERATURE_INDOOR",  // 0
+    "TEMPERATURE_OUTDOOR", // 1
+    "LAMP_ON",             // 2
+    "LAMP_OFF",            // 3
+    "WINDOW_STATUS",       // 4
+    "SET_THERMOSTAT",      // 5
+    "HEATER_STATUS",       // 6
 };
 
 // sonar used to get distance to window
@@ -94,15 +94,20 @@ void setup()
 // loop function, called repeatedly
 void loop()
 {
-    int indoorTemperature = getTemperature(SENSOR_TEMPERATURE_INDOOR, SERIES_RESISTANCE, 5);
+    double indoorTemperature = getTemperature(SENSOR_TEMPERATURE_INDOOR, SERIES_RESISTANCE, 5);
     bool windowOpen = getDistanceToWindow() < 5 ? false : true;
-    if (indoorTemperature < userTemperature && !windowOpen){
+    // Serial.println(userTemperature);
+    // Serial.println(indoorTemperature);
+    // Serial.println(windowOpen);
+    if (indoorTemperature < userTemperature && !windowOpen)
+    {
         heaterStatus = ON_STATUS;
-    }else{
+    }
+    else
+    {
         heaterStatus = OFF_STATUS;
     }
-    digitalWrite(HEAT_CONTROLLER, heaterStatus);
-    
+    digitalWrite(HEAT_CONTROLLER, heaterStatus == ON_STATUS ? HIGH : LOW);
 }
 
 // processes the request from Serial
@@ -116,14 +121,13 @@ void serialEvent()
         if (Serial.available() > 0)
         {
             char c = Serial.read();
-            if (c == '#'){
+            if (c == '#')
+            {
                 break;
-            } //gets one byte from serial buffer
-            request += c;           //makes the string readString
+            }             //gets one byte from serial buffer
+            request += c; //makes the string readString
         }
     }
-
-    Serial.println(request);
 
     RequestType requestType = error_request;
 
@@ -152,14 +156,16 @@ void serialEvent()
         requestType = window_status_request;
     }
 
-    if (request == requestMessage[set_thermostat_request]){
+    if (request == requestMessage[set_thermostat_request])
+    {
         requestType = set_thermostat_request;
     }
 
-    if (request == requestMessage[heater_status_request]){
+    if (request == requestMessage[heater_status_request])
+    {
         requestType = heater_status_request;
     }
-    
+
     String response = createResponse(requestType);
 
     Serial.println(response);
@@ -192,70 +198,89 @@ double inline getTemperature(int analogPin, double seriesResistance, int nrSampl
     return steinhart;
 }
 
-String inline createResponse(RequestType requestType){
+String inline createResponse(RequestType requestType)
+{
     String response = "";
     String temp = "";
     int cm = 0;
 
-    switch(requestType){
-        case temperature_indoor_request:
-            response += getTemperature(SENSOR_TEMPERATURE_INDOOR, SERIES_RESISTANCE, SAMPLES);
-            break;
-        case temperature_outdoor_request:
-            response += getTemperature(SENSOR_TEMPERATURE_OUTDOOR, SERIES_RESISTANCE, SAMPLES);
-            break;
-        case lamp_on_request:
-            turnLamp(LAMP_CONTROLLER, ON_STATUS);
-            response += "SUCCESS";
-            break;
-        case lamp_off_request:
-            turnLamp(LAMP_CONTROLLER, OFF_STATUS);
-            response += "SUCCESS";
-            break;
-        case window_status_request:
-            cm = getDistanceToWindow();
-            response += cm > 5 ? "WINDOW_OPEN" : "WINDOW_CLOSED";
-            break;
-        case set_thermostat_request:
-            while (Serial.available()){
-                temp += (char) Serial.read();
+    switch (requestType)
+    {
+    case temperature_indoor_request:
+        response += getTemperature(SENSOR_TEMPERATURE_INDOOR, SERIES_RESISTANCE, SAMPLES);
+        break;
+    case temperature_outdoor_request:
+        response += getTemperature(SENSOR_TEMPERATURE_OUTDOOR, SERIES_RESISTANCE, SAMPLES);
+        break;
+    case lamp_on_request:
+        turnLamp(LAMP_CONTROLLER, ON_STATUS);
+        response += "SUCCESS";
+        break;
+    case lamp_off_request:
+        turnLamp(LAMP_CONTROLLER, OFF_STATUS);
+        response += "SUCCESS";
+        break;
+    case window_status_request:
+        cm = getDistanceToWindow();
+        response += cm > 5 ? "WINDOW_OPEN" : "WINDOW_CLOSED";
+        break;
+    case set_thermostat_request:
+        while (Serial.available() > 0)
+        {
+            delay(3); //delay to allow buffer to fill
+            if (Serial.available() > 0)
+            {
+                char c = Serial.read();
+                temp += c; //makes the string readString
             }
-            userTemperature = temp.toInt();
-            response += "SUCCESS";
-            break;
-        case heater_status_request:
-            response += heaterStatus ? "HEATER_ON" : "HEATER_OFF";
-            break;
-        default:
-            response += "ERROR";
-            break;
+        }
+        //userTemperature = temp.toInt();
+        userTemperature = temp.toInt();
+        response += "SUCCESS";
+        break;
+    case heater_status_request:
+        response += heaterStatus ? "HEATER_ON" : "HEATER_OFF";
+        break;
+    default:
+        response += "ERROR";
+        break;
     }
 
     return response;
 }
 
-void inline turnLamp(int lampPin, bool status){
-    if (status){
+void inline turnLamp(int lampPin, bool status)
+{
+    if (status)
+    {
         digitalWrite(lampPin, HIGH);
-    } else{
+    }
+    else
+    {
         digitalWrite(lampPin, LOW);
     }
 }
 
-void inline turnHeat(int heatPin, bool status){
-    if (status){
+void inline turnHeat(int heatPin, bool status)
+{
+    if (status)
+    {
         digitalWrite(heatPin, HIGH);
-    } else{
+    }
+    else
+    {
         digitalWrite(heatPin, LOW);
     }
 }
 
-int getDistanceToWindow(){
+int getDistanceToWindow()
+{
     // get echo time
     int echotime = sonar.ping_median(5);
     // get cm
     int cm = sonar.convert_cm(echotime);
-    if (cm == 0){
+    if (cm == 0)
+    {
         cm = 200;
     }
     return cm;
