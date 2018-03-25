@@ -19,8 +19,9 @@ namespace webapp.Controllers
             {
                 string temperatureString = Request.QueryString["temperature"];
                 int temperature = Int32.Parse(temperatureString);
-                arduinoPort.Write("SET_THERMOSTAT");
+                arduinoPort.Write("SET_THERMOSTAT#");
                 arduinoPort.WriteLine(temperature.ToString(CultureInfo.InvariantCulture));
+                string response = arduinoPort.ReadLine();
             }
             else
             {
