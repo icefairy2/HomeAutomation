@@ -78,7 +78,6 @@ $(function() {
             method: "GET",
             url: "api/Lamps",
             success: function (response) {
-                console.log(response);
                 let length = response.length;
                 //
                 google.charts.load("current", { packages: ["timeline"] });
@@ -93,17 +92,25 @@ $(function() {
                     dataTable.addColumn({ type: 'date', id: 'End' });
                     //
 
+                    let onHours;
+                    var diffMins = 0;
+
                     x = [];
                     for (i = 0; i < length - 2; i++) {
-                        x.push([response[i].IsTurnedOn?"on":"off", new Date(response[i].DateRecorded), new Date(response[i+1].DateRecorded)])
-                        //dataTable.addRows(['President', new Date(1789, 3, 30), new Date(1797, 2, 4)]);
+                        x.push([response[i].IsTurnedOn ? "on" : "off", new Date(response[i].DateRecorded), new Date(response[i + 1].DateRecorded)]);
+                        if (response[i].IsTurnedOn) {
+                            onHours = Math.floor(Math.abs(new Date((new Date(response[i + 1].DateRecorded) - new Date(response[i].DateRecorded))/1000/60)));
+                            diffMins += onHours;
+                        }
                     }
                     //x.push([response[length - 1].IsTurnedOn ? "on" : "off", new Date(response[length-1].DateRecorded), new Date()])
 
                     dataTable.addRows(x);
-
                     chart.draw(dataTable);
-                }
+
+                    let consumption = 60 * (diffMins / 60);
+                    $('#calculatedConsumption').text("Your daily consumption, assumed on a 60W lightbulb: " + consumption + "Wh in total " + diffMins + " minutes");
+                } 
             }
         })
     }
