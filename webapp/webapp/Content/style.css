@@ -35,7 +35,7 @@ main {
 }
 
 #temp p {
-    width: 127px;
+    width: 196px;
     float: left;
 }
 
@@ -55,7 +55,7 @@ main {
 
     border-collapse: collapse;
 
-    margin: 0 100px;
+    margin: 0 31px;
 }
 
 #temperatures tr:nth-child(even) {
