@@ -44,7 +44,7 @@ $(function() {
     $('#termostat button').click(function (e) {
         e.preventDefault();
         let setupValue = $('#preferredTemp').val();
-        let url = "TurnHeat/temperature=" + setupValue;
+        let url = "TurnHeat?temperature=" + setupValue;
 
         $.ajax({
             method: 'GET',
