@@ -44,12 +44,13 @@ $(function() {
     $('#termostat button').click(function (e) {
         e.preventDefault();
         let setupValue = $('#preferredTemp').val();
-        let url = "TurnHeat?temperature=" + setupValue;
+        let link = "TurnHeat?temperature=" + setupValue;
+        console.log(link);
 
         $.ajax({
-            method: 'GET',
-            url: url
-        })
+            method: "GET",
+            url: link
+        });
 
         alert("Temperature threshold has been set!");
     })
@@ -57,7 +58,7 @@ $(function() {
     window.setInterval(function () {
         checkFurnes();
         //console.log("seconds");
-    }, 1000);
+    }, 60000);
 
     function checkFurnes() {
         $.ajax({
